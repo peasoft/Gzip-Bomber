@@ -10,7 +10,7 @@ on:
         type: number
 
 jobs:
-  log-the-inputs:
+  making:
     runs-on: ubuntu-latest
     steps:
       - name: Make
